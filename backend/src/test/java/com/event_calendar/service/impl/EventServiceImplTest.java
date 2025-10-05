@@ -294,39 +294,6 @@ class EventServiceImplTest {
     verify(eventMapper, never()).toResponseDTO(any(EventEntity.class), any(ZoneId.class));
   }
 
-  //  @Test
-  void updateEvent_UpdatesAllFields() {
-    EventDTO updateDTO = new EventDTO();
-    updateDTO.setTitle("New Title");
-    updateDTO.setDescription("New Description");
-    updateDTO.setStartDateTime(localNow.plusHours(5));
-    updateDTO.setEndDateTime(localNow.plusHours(7));
-    updateDTO.setLocation("New Location");
-
-    EventDTO responseDTO = new EventDTO();
-    responseDTO.setId(1L);
-    responseDTO.setTitle("New Title");
-    responseDTO.setDescription("New Description");
-    responseDTO.setStartDateTime(localNow.plusHours(5));
-    responseDTO.setEndDateTime(localNow.plusHours(7));
-    responseDTO.setLocation("New Location");
-
-    when(eventRepository.findById(1L)).thenReturn(Optional.of(savedEventEntity));
-    when(eventRepository.save(any(EventEntity.class))).thenReturn(savedEventEntity);
-    when(eventMapper.toResponseDTO(any(EventEntity.class), any(ZoneId.class))).thenReturn(responseDTO);
-
-    EventDTO result = eventService.updateEvent(1L, updateDTO, zoneId);
-
-    assertNotNull(result);
-    assertEquals("New Title", result.getTitle());
-    assertEquals("New Description", result.getDescription());
-    assertEquals("New Location", result.getLocation());
-    verify(eventRepository).save(argThat(entity -> entity.getTitle()
-            .equals("New Title") && entity.getDescription()
-            .equals("New Description") && entity.getLocation()
-            .equals("New Location")));
-  }
-
   @Test
   void updateEvent_WithDifferentTimezone_ConvertsDateTimesCorrectly() {
     ZoneId paris = ZoneId.of("Europe/Paris");

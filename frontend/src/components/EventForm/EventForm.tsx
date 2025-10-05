@@ -159,7 +159,7 @@ export function EventForm({onSubmit, onCancel, loading = false, initialData, isE
                   className={styles.textField}
                   {...register('location')}
                   disabled={loading}
-                  inputProps={{maxLength: 5000}}
+                  inputProps={{maxLength: 255}}
                 />
 
                 <Box className={styles.buttonGroup}>

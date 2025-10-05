@@ -18,4 +18,4 @@ ENV PORT=3000
 ENV HOST=0.0.0.0
 
 # Start Vite in development mode
-CMD ["npm", "run", "preview", "--", "--port", "3000", "--host"]
+CMD ["npm", "run", "dev", "--", "--port", "3000", "--host"]

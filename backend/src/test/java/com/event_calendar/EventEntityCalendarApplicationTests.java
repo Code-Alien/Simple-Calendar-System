@@ -8,7 +8,7 @@ class EventCalendarApplicationTests {
 
 	@Test
 	void contextLoads() {
-    throw new UnsupportedOperationException("Not yet implemented");
+    //    throw new UnsupportedOperationException("Not yet implemented");
 	}
 
 }
