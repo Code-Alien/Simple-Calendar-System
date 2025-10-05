@@ -1,4 +1,5 @@
 # Simple-Calendar-System
+<img width="1918" height="967" alt="img" src="https://github.com/user-attachments/assets/94ffd81c-c61c-40e7-b92e-3b133c030234" />
 
 A full-stack application with React frontend, Java backend, and MySQL database.
 
