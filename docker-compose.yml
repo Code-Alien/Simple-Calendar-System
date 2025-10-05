@@ -1,0 +1,44 @@
+version: "3.9"
+
+services:
+
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile  # Your dev Dockerfile
+    ports:
+      - "3000:3000"
+    environment:
+      VITE_API_URL: "http://localhost:8080"  # Backend API URL
+    volumes:
+      - ./frontend:/app
+      - /app/node_modules
+    depends_on:
+      - backend
+
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    ports:
+      - "8080:8080"
+    environment:
+      DB_HOST_URL: jdbc:mysql://mysql:3306/mydb
+      DB_USER: root
+      DB_PASSWORD: example
+    depends_on:
+      - mysql
+
+  mysql:
+    image: mysql:8.1
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: example
+      MYSQL_DATABASE: mydb
+    ports:
+      - "3306:3306"
+    volumes:
+      - mysql-data:/var/lib/mysql
+
+volumes:
+  mysql-data:

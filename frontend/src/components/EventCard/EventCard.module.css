@@ -1,0 +1,49 @@
+.eventCard {
+    padding: 2px 4px;
+    font-size: 12px;
+    line-height: 1.2;
+    overflow: hidden;
+    max-width: 200px; /* adjust as needed */
+
+}
+
+
+.time {
+    font-weight: bold;
+    color: #1976d2;
+    margin-bottom: 1px;
+}
+
+.title {
+    font-weight: 500;
+    color: #333;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.description {
+    font-size: 10px;
+    color: #555;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    margin-bottom: 1px;
+}
+
+.location {
+    font-size: 10px;
+    color: #666;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.description,
+.location {
+    white-space: nowrap; /* Prevent line break */
+    overflow: hidden; /* Hide overflow */
+    text-overflow: ellipsis; /* Show "..." */
+    max-width: 100%;
+    display: block;
+}

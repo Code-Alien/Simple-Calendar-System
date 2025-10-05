@@ -1,0 +1,31 @@
+.form {
+    margin-top: 16px;
+}
+
+.fieldset {
+    width: 100%;
+}
+
+.formGroup {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+}
+
+.dateTimeRow {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+@media (min-width: 600px) {
+    .dateTimeRow {
+        flex-direction: row;
+    }
+}
+
+.buttonGroup {
+    display: flex;
+    gap: 16px;
+    justify-content: flex-end;
+}
