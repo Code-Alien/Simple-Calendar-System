@@ -13,8 +13,6 @@ const apiClient: AxiosInstance = axios.create({
 
 apiClient.interceptors.request.use(
   (config) => {
-    // Add any auth tokens or other headers here if needed
-    console.log(`Making ${config.method?.toUpperCase()} request to ${config.url}`);
     return config;
   },
   (error) => {
@@ -25,7 +23,6 @@ apiClient.interceptors.request.use(
 
 apiClient.interceptors.response.use(
   (response: AxiosResponse) => {
-    console.log(`Response received: ${response.status} ${response.statusText}`);
     return response;
   },
   (error: AxiosError) => {

@@ -1,49 +1,95 @@
 .eventCard {
-    padding: 2px 4px;
-    font-size: 12px;
-    line-height: 1.2;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    border: none;
+    border-radius: 8px;
+    color: white;
+    font-size: 0.75rem;
+    font-weight: 500;
+    padding: 0.5rem;
+    margin: 0.125rem 0;
+    cursor: pointer;
+    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+    box-shadow: 0 2px 8px 0 rgba(102, 126, 234, 0.3);
     overflow: hidden;
-    max-width: 200px; /* adjust as needed */
-
+    position: relative;
 }
 
+.eventCard::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+    transition: left 0.5s;
+}
 
-.time {
-    font-weight: bold;
-    color: #1976d2;
-    margin-bottom: 1px;
+.eventCard:hover::before {
+    left: 100%;
+}
+
+.eventCard:hover {
+    transform: scale(1.05);
+    box-shadow: 0 4px 12px 0 rgba(102, 126, 234, 0.5);
+}
+
+.eventHeader {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 0.5rem;
+    margin-bottom: 0.25rem;
 }
 
 .title {
+    font-weight: 600;
+    font-size: 0.75rem;
+    color: white;
+    line-height: 1.2;
+    flex: 1;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+}
+
+.time {
+    display: flex;
+    align-items: center;
+    gap: 0.25rem;
+    font-size: 0.7rem;
+    color: rgba(255, 255, 255, 0.9);
     font-weight: 500;
-    color: #333;
     white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
+    flex-shrink: 0;
 }
 
-.description {
-    font-size: 10px;
-    color: #555;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    margin-bottom: 1px;
-}
-
-.location {
-    font-size: 10px;
-    color: #666;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
+.eventDetails {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+    margin-top: 0.25rem;
 }
 
 .description,
 .location {
-    white-space: nowrap; /* Prevent line break */
-    overflow: hidden; /* Hide overflow */
-    text-overflow: ellipsis; /* Show "..." */
-    max-width: 100%;
-    display: block;
+    display: flex;
+    align-items: center;
+    gap: 0.25rem;
+    font-size: 0.65rem;
+    color: rgba(255, 255, 255, 0.8);
+    line-height: 1.2;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
+
+.description span,
+.location span {
+    flex: 1;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+

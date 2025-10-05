@@ -3,8 +3,7 @@ import {useEffect, useState} from 'react';
 import {eventsApi} from '../../api/events';
 import type {Event, EventRequest} from '../../types/event';
 import {EventForm} from '../../components/EventForm/EventForm';
-import {Alert, Box, Button, Card, CardContent, CircularProgress, Dialog, DialogActions, DialogContent, DialogTitle, Typography} from '@mui/material';
-import {ArrowBack as BackIcon, Delete as DeleteIcon, Edit as EditIcon} from '@mui/icons-material';
+import {ArrowLeft, Edit2, Trash2, Clock, MapPin, Calendar, FileText, X} from 'lucide-react';
 import styles from './EventDetailsPage.module.css';
 
 export function EventDetailsPage() {
@@ -83,175 +82,184 @@ export function EventDetailsPage() {
 
   if (loading && !event) {
     return (
-      <Box className={styles.loading}>
-        <CircularProgress/>
-      </Box>
+      <div className={styles.loading}>
+        <div className={styles.loadingSpinner}></div>
+        <p>Loading event details...</p>
+      </div>
     );
   }
 
   if (error && !event) {
     return (
-      <Box className={styles.errorPage}>
-        <Alert severity="error" className={styles.error}>
+      <div className={styles.errorPage}>
+        <div className={styles.error}>
           {error}
-        </Alert>
-        <Button variant="outlined" onClick={handleBack}>
-          <BackIcon sx={{mr: 1}}/>
+        </div>
+        <button onClick={handleBack} className={styles.backButton}>
+          <ArrowLeft size={16} />
           Back to Calendar
-        </Button>
-      </Box>
+        </button>
+      </div>
     );
   }
 
   if (!event) {
     return (
-      <Box className={styles.notFound}>
-        <Typography variant="h5" gutterBottom>
-          Event not found
-        </Typography>
-        <Button variant="outlined" onClick={handleBack}>
-          <BackIcon sx={{mr: 1}}/>
+      <div className={styles.notFound}>
+        <h2>Event not found</h2>
+        <button onClick={handleBack} className={styles.backButton}>
+          <ArrowLeft size={16} />
           Back to Calendar
-        </Button>
-      </Box>
+        </button>
+      </div>
     );
   }
 
   return (
-    <Box className={styles.container}>
-      <Box className={styles.header}>
-        <Typography variant="h4" component="h1">
-          Event Details
-        </Typography>
-        <Box className={styles.buttonGroup}>
-          <Button
-            variant="outlined"
-            startIcon={<BackIcon/>}
-            onClick={handleBack}
+    <div className={styles.container}>
+      <div className={styles.header}>
+        <div className={styles.headerContent}>
+          <button 
+            onClick={handleBack} 
+            className={styles.backButton}
+            disabled={deleteDialogOpen}
           >
+            <ArrowLeft size={20} />
             Back
-          </Button>
+          </button>
+          <div className={styles.titleSection}>
+            <Calendar size={32} className={styles.titleIcon} />
+            <h1 className={styles.title}>Event Details</h1>
+          </div>
           {!editing && (
-            <>
-              <Button
-                variant="contained"
-                startIcon={<EditIcon/>}
-                onClick={handleEdit}
+            <div className={styles.actionButtons}>
+              <button 
+                onClick={handleEdit} 
+                className={styles.editButton}
+                disabled={deleteDialogOpen}
               >
+                <Edit2 size={16} />
                 Edit
-              </Button>
-              <Button
-                variant="outlined"
-                color="error"
-                startIcon={<DeleteIcon/>}
-                onClick={() => setDeleteDialogOpen(true)}
+              </button>
+              <button 
+                onClick={() => setDeleteDialogOpen(true)} 
+                className={styles.deleteButton}
+                disabled={deleteDialogOpen}
               >
+                <Trash2 size={16} />
                 Delete
-              </Button>
-            </>
+              </button>
+            </div>
           )}
-        </Box>
-      </Box>
+        </div>
+      </div>
 
-      {error && (
-        <Alert severity="error" className={styles.error}>
-          {error}
-        </Alert>
-      )}
+      <div className={styles.content}>
+        {error && (
+          <div className={styles.error}>
+            {error}
+          </div>
+        )}
 
-      {editing ? (
-        <EventForm
-          initialData={{
-            title: event.title,
-            description: event.description || '',
-            startDateTime: event.startDateTime,
-            endDateTime: event.endDateTime,
-            location: event.location || ''
-          }}
-          onSubmit={handleSave}
-          onCancel={handleCancelEdit}
-          loading={loading}
-          isEditing={true}
-        />
-      ) : (
-        <Card>
-          <CardContent>
-            <Typography variant="h5" gutterBottom>
-              {event.title}
-            </Typography>
+        {editing ? (
+          <EventForm
+            initialData={{
+              title: event.title,
+              description: event.description || '',
+              startDateTime: event.startDateTime,
+              endDateTime: event.endDateTime,
+              location: event.location || ''
+            }}
+            onSubmit={handleSave}
+            onCancel={handleCancelEdit}
+            loading={loading}
+            isEditing={true}
+          />
+        ) : (
+          <div className={styles.eventCard}>
+            <div className={styles.eventHeader}>
+              <h2 className={styles.eventTitle}>{event.title}</h2>
+            </div>
 
-            {event.description && (
-              <Box className={styles.field}>
-                <Typography variant="subtitle1" className={styles.fieldLabel} gutterBottom>
-                  Description:
-                </Typography>
-                <Typography variant="body1" className={styles.fieldValue}>
-                  {event.description}
-                </Typography>
-              </Box>
-            )}
+            <div className={styles.eventContent}>
+              {event.description && (
+                <div className={styles.field}>
+                  <div className={styles.fieldHeader}>
+                    <FileText size={20} className={styles.fieldIcon} />
+                    <span className={styles.fieldLabel}>Description</span>
+                  </div>
+                  <p className={styles.fieldValue}>{event.description}</p>
+                </div>
+              )}
 
-            <Box className={styles.field}>
-              <Typography variant="subtitle1" className={styles.fieldLabel} gutterBottom>
-                Start Date & Time:
-              </Typography>
+              <div className={styles.field}>
+                <div className={styles.fieldHeader}>
+                  <Clock size={20} className={styles.fieldIcon} />
+                  <span className={styles.fieldLabel}>Start Date & Time</span>
+                </div>
+                <p className={styles.fieldValue}>
+                  {new Date(event.startDateTime).toLocaleString()}
+                </p>
+              </div>
 
+              <div className={styles.field}>
+                <div className={styles.fieldHeader}>
+                  <Clock size={20} className={styles.fieldIcon} />
+                  <span className={styles.fieldLabel}>End Date & Time</span>
+                </div>
+                <p className={styles.fieldValue}>
+                  {new Date(event.endDateTime).toLocaleString()}
+                </p>
+              </div>
 
-              <Typography variant="body1" className={styles.fieldValue}>
-                {new Date(event.startDateTime).toLocaleString()}
-              </Typography>
-            </Box>
+              {event.location && (
+                <div className={styles.field}>
+                  <div className={styles.fieldHeader}>
+                    <MapPin size={20} className={styles.fieldIcon} />
+                    <span className={styles.fieldLabel}>Location</span>
+                  </div>
+                  <p className={styles.fieldValue}>{event.location}</p>
+                </div>
+              )}
+            </div>
+          </div>
+        )}
 
-            <Box className={styles.field}>
-              <Typography variant="subtitle1" className={styles.fieldLabel} gutterBottom>
-                End Date & Time:
-              </Typography>
-              <Typography variant="body1" className={styles.fieldValue}>
-                {new Date(event.endDateTime).toLocaleString()}
-              </Typography>
-            </Box>
-
-            {event.location && (
-              <Box className={styles.field}>
-                <Typography variant="subtitle1" className={styles.fieldLabel} gutterBottom>
-                  Location:
-                </Typography>
-                <Typography variant="body1" className={styles.fieldValue}>
-                  {event.location}
-                </Typography>
-              </Box>
-            )}
-          </CardContent>
-        </Card>
-      )}
-
-      {/* Delete Confirmation Dialog */}
-      <Dialog
-        open={deleteDialogOpen}
-        onClose={() => setDeleteDialogOpen(false)}
-        maxWidth="sm"
-        fullWidth
-      >
-        <DialogTitle>Delete Event</DialogTitle>
-        <DialogContent>
-          <Typography>
-            Are you sure you want to delete "{event.title}"? This action cannot be undone.
-          </Typography>
-        </DialogContent>
-        <DialogActions>
-          <Button onClick={() => setDeleteDialogOpen(false)}>
-            Cancel
-          </Button>
-          <Button
-            onClick={handleDelete}
-            color="error"
-            variant="contained"
-            disabled={deleting}
-          >
-            {deleting ? 'Deleting...' : 'Delete'}
-          </Button>
-        </DialogActions>
-      </Dialog>
-    </Box>
+        {/* Delete Confirmation Dialog */}
+        {deleteDialogOpen && (
+          <div className={styles.dialogOverlay}>
+            <div className={styles.dialog}>
+              <div className={styles.dialogHeader}>
+                <h3>Delete Event</h3>
+                <button 
+                  onClick={() => setDeleteDialogOpen(false)} 
+                  className={styles.closeButton}
+                >
+                  <X size={20} />
+                </button>
+              </div>
+              <div className={styles.dialogContent}>
+                <p>Are you sure you want to delete "{event.title}"? This action cannot be undone.</p>
+              </div>
+              <div className={styles.dialogActions}>
+                <button 
+                  onClick={() => setDeleteDialogOpen(false)} 
+                  className={styles.cancelButton}
+                >
+                  Cancel
+                </button>
+                <button
+                  onClick={handleDelete}
+                  disabled={deleting}
+                  className={styles.confirmDeleteButton}
+                >
+                  {deleting ? 'Deleting...' : 'Delete'}
+                </button>
+              </div>
+            </div>
+          </div>
+        )}
+      </div>
+    </div>
   );
 }

@@ -1,24 +1,23 @@
 import {Calendar} from '../../components/Calendar/Calendar';
 import {Link} from 'react-router-dom';
-import {Button} from '@mui/material';
-import {Add as AddIcon} from '@mui/icons-material';
+import {Plus} from 'lucide-react';
 import styles from './CalendarPage.module.css';
 
 export function CalendarPage() {
   return (
-    <div>
+    <div className={styles.container}>
       <div className={styles.header}>
-        <h1>Event Calendar</h1>
-        <Button
-          variant="contained"
-          startIcon={<AddIcon/>}
-          component={Link}
-          to="/add-event"
-        >
-          Add Event
-        </Button>
+        <div className={styles.headerContent}>
+          <h1 className={styles.title}>Event Calendar</h1>
+          <Link to="/add-event" className={styles.addButton}>
+            <Plus size={20} />
+            Add Event
+          </Link>
+        </div>
       </div>
-      <Calendar/>
+      <div className={styles.calendarWrapper}>
+        <Calendar/>
+      </div>
     </div>
   );
 }

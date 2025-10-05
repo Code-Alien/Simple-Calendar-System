@@ -38,7 +38,7 @@ export function EventForm({onSubmit, onCancel, loading = false, initialData, isE
   });
 
   const minDate = dayjs('1970-01-02T00:00:00Z');
-  const maxDate = dayjs('2038-01-18T03:14:00Z');
+  const maxDate = dayjs('2038-01-18T03:10:00Z');
 
   const startDateTime = watch('startDateTime');
 
@@ -46,136 +46,145 @@ export function EventForm({onSubmit, onCancel, loading = false, initialData, isE
 
   return (
     <LocalizationProvider dateAdapter={AdapterDayjs}>
-      <Box component="form" onSubmit={handleSubmit(onSubmit)} className={styles.form}>
-        <FormControl component="fieldset" className={styles.fieldset}>
-          <FormGroup className={styles.formGroup}>
-            <Stack spacing={3}>
-              <TextField
-                fullWidth
-                label="Title *"
-                {...register('title', {
-                  required: 'Title is required',
-                  validate: (value) =>
-                    value.trim() !== '' || 'Title must not be empty or only spaces',
-                  minLength: {value: 1, message: 'Title must not be empty'}
-                })}
-                error={!!errors.title}
-                helperText={errors.title?.message}
-                disabled={loading}
-                inputProps={{maxLength: 255}}
-              />
-
-              <TextField
-                fullWidth
-                label="Description"
-                multiline
-                rows={4}
-                {...register('description')}
-                disabled={loading}
-                inputProps={{maxLength: 5000}}
-              />
-
-              <Stack className={styles.dateTimeRow}>
-                <Controller
-                  name="startDateTime"
-                  control={control}
-                  rules={{
-                    required: 'Start date and time is required'
-                  }}
-                  render={({field, fieldState: {error}}) => (
-                    <DateTimePicker
-                      {...field}
-                      label="Start Date & Time *"
-                      value={field.value ? dayjs(field.value) : null}
-                      onChange={(date) => {
-                        if (date) {
-                          field.onChange(date.format('YYYY-MM-DDTHH:mm:ss'));
-                        } else {
-                          field.onChange(null);
-                        }
-                      }}
-                      minDate={minDate}
-                      maxDate={maxDate}
-                      disabled={loading}
-                      slotProps={{
-                        textField: {
-                          fullWidth: true,
-                          error: !!error,
-                          helperText: error?.message
-                        }
-                      }}
-                    />
-                  )}
+      <div className={styles.formContainer}>
+        <Box component="form" onSubmit={handleSubmit(onSubmit)} className={styles.form}>
+          <FormControl component="fieldset" className={styles.fieldset}>
+            <FormGroup className={styles.formGroup}>
+              <Stack spacing={3}>
+                <TextField
+                  fullWidth
+                  label="Title *"
+                  className={styles.textField}
+                  {...register('title', {
+                    required: 'Title is required',
+                    validate: (value) =>
+                      value.trim() !== '' || 'Title must not be empty or only spaces',
+                    minLength: {value: 1, message: 'Title must not be empty'}
+                  })}
+                  error={!!errors.title}
+                  helperText={errors.title?.message}
+                  disabled={loading}
+                  inputProps={{maxLength: 255}}
                 />
 
-                <Controller
-                  name="endDateTime"
-                  control={control}
-                  rules={{
-                    required: 'End date and time is required',
-                    validate: (value) => {
-                      if (!value) return 'End date and time is required';
-                      if (startDateTime && dayjs(value).isBefore(dayjs(startDateTime))) {
-                        return 'End date and time must be after start date and time';
+                <TextField
+                  fullWidth
+                  label="Description"
+                  multiline
+                  rows={4}
+                  className={styles.textField}
+                  {...register('description')}
+                  disabled={loading}
+                  inputProps={{maxLength: 5000}}
+                />
+
+                <Stack className={styles.dateTimeRow}>
+                  <Controller
+                    name="startDateTime"
+                    control={control}
+                    rules={{
+                      required: 'Start date and time is required'
+                    }}
+                    render={({field, fieldState: {error}}) => (
+                      <DateTimePicker
+                        {...field}
+                        label="Start Date & Time *"
+                        value={field.value ? dayjs(field.value) : null}
+                        onChange={(date) => {
+                          if (date) {
+                            field.onChange(date.format('YYYY-MM-DDTHH:mm:ss'));
+                          } else {
+                            field.onChange(null);
+                          }
+                        }}
+                        minDate={minDate}
+                        maxDate={maxDate}
+                        disabled={loading}
+                        slotProps={{
+                          textField: {
+                            fullWidth: true,
+                            className: styles.textField,
+                            error: !!error,
+                            helperText: error?.message
+                          }
+                        }}
+                      />
+                    )}
+                  />
+
+                  <Controller
+                    name="endDateTime"
+                    control={control}
+                    rules={{
+                      required: 'End date and time is required',
+                      validate: (value) => {
+                        if (!value) return 'End date and time is required';
+                        if (startDateTime && !dayjs(value).isAfter(dayjs(startDateTime))) {
+                          return 'End date and time must be after start date and time';
+                        }
+                        return true;
                       }
-                      return true;
-                    }
-                  }}
-                  render={({field, fieldState: {error}}) => (
-                    <DateTimePicker
-                      {...field}
-                      label="End Date & Time *"
-                      value={field.value ? dayjs(field.value) : null}
-                      onChange={(date) => {
-                        if (date) {
-                          field.onChange(date.format('YYYY-MM-DDTHH:mm:ss'));
-                        } else {
-                          field.onChange(null);
-                        }
-                      }}
-                      disabled={loading}
-                      minDateTime={startDateTime ? dayjs(startDateTime) : minDate}
-                      maxDate={maxDate}
-                      slotProps={{
-                        textField: {
-                          fullWidth: true,
-                          error: !!error,
-                          helperText: error?.message
-                        }
-                      }}
-                    />
-                  )}
+                    }}
+                    render={({field, fieldState: {error}}) => (
+                      <DateTimePicker
+                        {...field}
+                        label="End Date & Time *"
+                        value={field.value ? dayjs(field.value) : null}
+                        onChange={(date) => {
+                          if (date) {
+                            field.onChange(date.format('YYYY-MM-DDTHH:mm:ss'));
+                          } else {
+                            field.onChange(null);
+                          }
+                        }}
+                        disabled={loading}
+                        minDateTime={startDateTime ? dayjs(startDateTime) : minDate}
+                        maxDate={maxDate}
+                        slotProps={{
+                          textField: {
+                            fullWidth: true,
+                            className: styles.textField,
+                            error: !!error,
+                            helperText: error?.message
+                          }
+                        }}
+                      />
+                    )}
+                  />
+                </Stack>
+
+                <TextField
+                  fullWidth
+                  label="Location"
+                  className={styles.textField}
+                  {...register('location')}
+                  disabled={loading}
+                  inputProps={{maxLength: 5000}}
                 />
+
+                <Box className={styles.buttonGroup}>
+                  <Button
+                    variant="outlined"
+                    onClick={onCancel}
+                    disabled={loading}
+                    className={styles.cancelButton}
+                  >
+                    Cancel
+                  </Button>
+                  <Button
+                    type="submit"
+                    variant="contained"
+                    disabled={loading}
+                    className={styles.submitButton}
+                  >
+                    {submitButtonText}
+                  </Button>
+                </Box>
               </Stack>
-
-              <TextField
-                fullWidth
-                label="Location"
-                {...register('location')}
-                disabled={loading}
-                inputProps={{maxLength: 5000}}
-              />
-
-              <Box className={styles.buttonGroup}>
-                <Button
-                  variant="outlined"
-                  onClick={onCancel}
-                  disabled={loading}
-                >
-                  Cancel
-                </Button>
-                <Button
-                  type="submit"
-                  variant="contained"
-                  disabled={loading}
-                >
-                  {submitButtonText}
-                </Button>
-              </Box>
-            </Stack>
-          </FormGroup>
-        </FormControl>
-      </Box>
+            </FormGroup>
+          </FormControl>
+        </Box>
+      </div>
     </LocalizationProvider>
   );
 }

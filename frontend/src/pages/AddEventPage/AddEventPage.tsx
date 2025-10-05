@@ -3,6 +3,7 @@ import {useState} from 'react';
 import {eventsApi} from '../../api/events';
 import type {EventRequest} from '../../types/event';
 import {EventForm} from '../../components/EventForm/EventForm';
+import {ArrowLeft, CalendarPlus} from 'lucide-react';
 import styles from './AddEventPage.module.css';
 
 export function AddEventPage() {
@@ -30,17 +31,31 @@ export function AddEventPage() {
 
   return (
     <div className={styles.container}>
-      <h1>Add New Event</h1>
-      {error && (
-        <div className={styles.error}>
-          {error}
+      <div className={styles.header}>
+        <div className={styles.headerContent}>
+          <button onClick={handleCancel} className={styles.backButton}>
+            <ArrowLeft size={20} />
+            Back
+          </button>
+          <div className={styles.titleSection}>
+            <CalendarPlus size={32} className={styles.titleIcon} />
+            <h1 className={styles.title}>Add New Event</h1>
+          </div>
         </div>
-      )}
-      <EventForm
-        onSubmit={handleSubmit}
-        onCancel={handleCancel}
-        loading={loading}
-      />
+      </div>
+      
+      <div className={styles.content}>
+        {error && (
+          <div className={styles.error}>
+            {error}
+          </div>
+        )}
+        <EventForm
+          onSubmit={handleSubmit}
+          onCancel={handleCancel}
+          loading={loading}
+        />
+      </div>
     </div>
   );
 }

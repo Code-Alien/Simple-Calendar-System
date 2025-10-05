@@ -53,7 +53,12 @@ export function Calendar() {
   }, [])
 
   if (loading) {
-    return <div>Loading...</div>
+    return (
+      <div className={styles.loadingContainer}>
+        <div className={styles.loadingSpinner}></div>
+        <p>Loading calendar...</p>
+      </div>
+    )
   }
 
   return (
@@ -64,16 +69,9 @@ export function Calendar() {
         weekends={true}
         events={fullCalendarEvents}
         eventContent={renderEventContent}
-        themeSystem="solar"
-        customButtons={{
-          addEvent: {
-            text: 'Add Event',
-            click: handleEventAdd
-          }
-        }}
         headerToolbar={{
           left: 'title',
-          right: 'addEvent, today, prev,next'
+          right: 'prev,next'
         }}
         editable={true}
         selectable={true}
@@ -82,6 +80,7 @@ export function Calendar() {
         height='100%'
         eventClick={handleEventClick}
         eventAdd={handleEventAdd}
+        firstDay={1}
       />
     </div>
   )
