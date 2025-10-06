@@ -8,6 +8,15 @@ import utc from 'dayjs/plugin/utc';
 import timezone from 'dayjs/plugin/timezone';
 import styles from './EventForm.module.css';
 import type {EventRequest} from '../../types/event';
+import "dayjs/locale/fr";
+import "dayjs/locale/de";
+import "dayjs/locale/ja";
+import "dayjs/locale/vi";
+import 'dayjs/locale/en';
+import 'dayjs/locale/uk';
+import 'dayjs/locale/es';
+import 'dayjs/locale/it';
+import 'dayjs/locale/pt';
 
 dayjs.extend(utc);
 dayjs.extend(timezone);
@@ -41,11 +50,11 @@ export function EventForm({onSubmit, onCancel, loading = false, initialData, isE
   const maxDate = dayjs('2038-01-18T03:10:00Z');
 
   const startDateTime = watch('startDateTime');
-
+  const languageCode = navigator.language?.split('-')[0];
   let submitButtonText: string = isEditing ? 'Save Changes' : 'Create Event';
 
   return (
-    <LocalizationProvider dateAdapter={AdapterDayjs}>
+    <LocalizationProvider dateAdapter={AdapterDayjs} adapterLocale={languageCode}>
       <div className={styles.formContainer}>
         <Box component="form" onSubmit={handleSubmit(onSubmit)} className={styles.form}>
           <FormControl component="fieldset" className={styles.fieldset}>
