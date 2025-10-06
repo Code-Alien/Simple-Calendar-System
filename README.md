@@ -18,8 +18,8 @@ Follow these steps to get the project up and running on your local machine.
 ### 1. Clone the Repository
 You can either clone the repository or download it as a ZIP archive.
 ```bash
-git clone https://github.com/yourusername/your-repo-name.git
-cd your-repo-name
+git clone https://github.com/Code-Alien/Simple-Calendar-System
+cd Simple-Calendar-System
 ```
 
 ### 2. Start the Application
